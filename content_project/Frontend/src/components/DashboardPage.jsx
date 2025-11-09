@@ -1,6 +1,6 @@
 // frontend/src/components/DashboardPage.jsx
 import React, { useState, useEffect } from 'react';
-import { getProjects } from '../api'; // API ارتقا یافته را ایمپورت می‌کنیم
+import { getProjects } from '../api';
 import {
   Typography, Box, CircularProgress, List, ListItem,
   ListItemText, Paper, ListItemAvatar, Avatar
@@ -8,22 +8,22 @@ import {
 import { Folder as FolderIcon } from '@mui/icons-material';
 
 function DashboardPage() {
-  const [projects, setProjects] = useState([]); // لیست پروه‌ها
-  const [loading, setLoading] = useState(true); // وضعیت لودینگ
-  const [error, setError] = useState(null); // وضعیت خطا
+  // ... (کدهای state و useEffect شما دست نخورده باقی می‌مانند) ...
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // useEffect در اولین رندر کامپوننت اجرا می‌شود
   useEffect(() => {
+    // ... (کد fetchProjects شما دست نخورده باقی می‌ماند) ...
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const response = await getProjects(); // فراخوانی API
-        setProjects(response.data); // ذخیره داده‌ها در state
+        const response = await getProjects();
+        setProjects(response.data);
         setError(null);
       } catch (err) {
         console.error("Error fetching projects:", err);
         setError("خطا در دریافت پروژه‌ها");
-        // اگر توکن منقضی شده باشد (خطای 401)
         if (err.response && err.response.status === 401) {
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
@@ -33,46 +33,47 @@ function DashboardPage() {
         setLoading(false);
       }
     };
-
     fetchProjects();
-  }, []); // [] یعنی فقط یک بار اجرا شود
+  }, []);
 
-  // نمایش وضعیت لودینگ
   if (loading) {
     return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}><CircularProgress /></Box>;
   }
-
-  // نمایش خطا
   if (error) {
     return <Typography color="error" variant="h6">{error}</Typography>;
   }
 
+  // ... (کدهای بالای DashboardPage.jsx شما دست نخورده باقی می‌ماند)
+
   // نمایش لیست پروه‌ها
   return (
-    <Box>
+    <Box> {/* این باکس والد حالا از MainLayout.jsx دستور 'textAlign: right' را می‌گیرد */}
       <Typography variant="h4" gutterBottom>
-        داشبورد پروژه‌ها
+        داشبورد پروه‌ها
       </Typography>
 
-      <Paper elevation={3}> {/* یک کادر "شیک" */}
+      <Paper elevation={3}>
         <List>
           {projects.length === 0 ? (
             <ListItem>
-              <ListItemText primary="هیچ پروژه‌ای یافت نشد." />
+              {/* --- راه‌حل اجباری --- */}
+              <ListItemText
+                primary="هیچ پروژه‌ای یافت نشد."
+                sx={{ textAlign: 'right' }} // <-- این را اضافه کنید
+              />
             </ListItem>
           ) : (
             projects.map((project) => (
               <ListItem key={project.project_id} divider>
                 <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
+                  <Avatar> <FolderIcon /> </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={project.project_name} // نام پروژه
+                  primary={project.project_name}
                   secondary={`پیج: ${project.page_username} | تاریخ: ${project.start_date} تا ${project.end_date}`}
+                  // --- راه‌حل اجباری ---
+                  sx={{ textAlign: 'right' }} // <-- این را اضافه کنید
                 />
-                {/* TODO: اضافه کردن دکمه "مشاهده جزییات" */}
               </ListItem>
             ))
           )}
