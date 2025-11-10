@@ -1,16 +1,22 @@
 // frontend/src/components/LoginPage.jsx
-import React, { useState } from 'react';
-import { loginUser } from '../api';
+import React, { useState } from "react";
+import { loginUser } from "../api";
 import {
-  Container, Box, Typography, TextField, Button,
-  CircularProgress, Alert, Avatar
-} from '@mui/material';
-import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom'; // برای هدایت کاربر
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+  Avatar,
+} from "@mui/material";
+import { LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom"; // برای هدایت کاربر
 
 function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // هوک هدایت کاربر
@@ -22,15 +28,14 @@ function LoginPage() {
 
     try {
       const response = await loginUser(username, password);
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
+      localStorage.setItem("access_token", response.data.access);
+      localStorage.setItem("refresh_token", response.data.refresh);
 
       // هدایت به داشبورد
-      navigate('/dashboard');
-
+      navigate("/dashboard");
     } catch (err) {
-      console.error('Login Failed:', err);
-      setError('نام کاربری یا رمز عبور اشتباه است.');
+      console.error("Login Failed:", err);
+      setError("نام کاربری یا رمز عبور اشتباه است.");
     } finally {
       setLoading(false);
     }
@@ -41,12 +46,12 @@ function LoginPage() {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -79,7 +84,7 @@ function LoginPage() {
           />
 
           {error && (
-            <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+            <Alert severity="error" sx={{ width: "100%", mt: 2 }}>
               {error}
             </Alert>
           )}

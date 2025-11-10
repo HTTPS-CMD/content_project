@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
 import MainLayout from './components/MainLayout';
+import ProjectDetailPage from './components/ProjectDetailPage'; // <-- جدید
 
 /**
  * کامپوننت برای محافظت از روت‌ها
@@ -34,6 +35,14 @@ function App() {
         <Route
           path="/login"
           element={<LoginPage />}
+        />
+          <Route
+          path="/project/:projectId"
+          element={
+            <ProtectedRoute>
+              <ProjectDetailPage />
+            </ProtectedRoute>
+          }
         />
 
         {/* روت داشبورد (محافظت شده) */}

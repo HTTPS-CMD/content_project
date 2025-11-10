@@ -8,13 +8,13 @@ const apiClient = axios.create({
 });
 
 // --- بخش جادویی: Interceptor ---
-// این کد قبل از *هر* درخواست اجرا می‌شود
+
 apiClient.interceptors.request.use(
   (config) => {
-    // توکن را از Local Storage بخوان
+
     const token = localStorage.getItem('access_token');
     if (token) {
-      // اگر توکن بود، آن را به هدر درخواست اضافه کن
+
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
@@ -24,9 +24,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-/**
- * تابع برای ورود کاربر (حالا از apiClient استفاده می‌کند)
- */
+
 export const loginUser = (username, password) => {
   return apiClient.post('/api/v1/token/', { // نیازی به API_URL نیست
     username: username,
@@ -41,6 +39,12 @@ export const getProjects = () => {
   return apiClient.get('/api/v1/projects/'); // توکن به صورت خودکار ضمیمه می‌شود
 };
 
-// (در آینده APIهای دیگر را اینجا اضافه می‌کنیم)
+/** * تابع جدید: دریافت جزییات کامل یک پروژه (برای صفحه تب‌بندی)
+ * @param {string} projectId - شناسه (ID) پروژه
+ */
+export const getProjectDetails = (projectId) => {
+  return apiClient.get(`/api/v1/projects/${projectId}/`);
+};
 
-export default apiClient; // ما instance را export می‌کنیم
+
+export default apiClient;
